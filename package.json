@@ -2,11 +2,14 @@
   "name": "local-business-shop",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:types": "payload generate:types"
+
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
