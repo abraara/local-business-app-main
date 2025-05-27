@@ -2,6 +2,10 @@
 import { CategoryDropDown } from "./category-dropdown";
 import { CustomCategory } from "../types";
 import { useRef, useState, useEffect, use } from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ListFilterIcon } from "lucide-react";
+import { CategoriesSidebar } from "./categories-sidebar";
 
 interface Props {
     data: CustomCategory[]; // Updated to use CustomCategory type
@@ -17,7 +21,7 @@ const [isAnyHovered, setIsAnyHovered] = useState(false);
 const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 const activeCategory = "all";
-const activeCategoryIndex = data.findIndex((category) => category.slug === activeCategory);
+const activeCategoryIndex = data.findIndex((cat) => cat.slug === activeCategory);
 const isActiveCategoryHidden = activeCategoryIndex >= visibleCount;
 const isActiveCategoryVisible = activeCategoryIndex < visibleCount;
 
@@ -46,19 +50,21 @@ useEffect(() => {
   const resizeObserver = new ResizeObserver(calculateVisible);
   resizeObserver.observe(containerRef.current!);
 
-  return () => {
-    resizeObserver.disconnect();
-  };
+  return () => resizeObserver.disconnect();
 }, [data.length]);
 
 
   return (
     <div className="relative w-full">
 
+      <CategoriesSidebar
+      open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data} />
+
+{/* hidden items */}
 <div 
 ref={measureRef}
 className="absolute opacity-0 pointer-events-none flex"
-style={{position: "fixed"}}
+style={{position: "fixed", top: -9999, left: -9999}}
 >
           {data.map((category) => (
             <div key={category.id}>
@@ -71,16 +77,33 @@ style={{position: "fixed"}}
     ))}
     </div>
 
-      <div className="flex flex-nowrap items-center">
-          {data.map((category) => (
+    {/* visible items */}
+      <div 
+      ref={containerRef}
+      className="flex flex-nowrap items-center"
+      onMouseEnter={() => setIsAnyHovered(true)}
+      onMouseLeave={() => setIsAnyHovered(false)}
+      >
+          {data.slice(0, visibleCount).map((category) => (
             <div key={category.id}>
               <CategoryDropDown 
               category={category} 
               isActive={activeCategory === category.slug}
-              isNavigationHovered={false}
+              isNavigationHovered={isAnyHovered}
               />
             </div>  
     ))}
+    <div ref={viewAllRef} className="shrink-0">
+      <Button 
+      variant={"elevated"}
+      className={cn("h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black cursor-pointer hover:cursor-pointer",
+      isActiveCategoryHidden && !isAnyHovered && "bg-white border-primary")}
+      onClick={() => setIsSidebarOpen(true)}
+      >
+        View All
+        <ListFilterIcon className="ml-2" />
+      </Button>
+    </div>
     </div>
     </div>
   );
