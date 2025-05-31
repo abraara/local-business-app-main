@@ -43,7 +43,7 @@ export const CategoryDropDown = ({ category, isActive, isNavigationHovered }: Pr
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={toggleDropdown}
-    >
+    > 
       <div className="relative">
       <Button variant="elevated"
     className={cn(
@@ -53,7 +53,7 @@ export const CategoryDropDown = ({ category, isActive, isNavigationHovered }: Pr
     )}
     >
       <Link
-      href={category.slug === "all" ? "" : `/${category.slug}`}
+      href={category.slug === "all" ? "/" : `/${category.slug}`}
       >
       {category.name}
       </Link>

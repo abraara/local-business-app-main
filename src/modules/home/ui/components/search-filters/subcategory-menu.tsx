@@ -32,7 +32,7 @@ export const SubCategoryMenu = ({ category, isOpen, position }: Props) => {
                     <Link
                     key={subcategory.slug} 
                     href={`/${category.slug}/${subcategory.slug}`}
-                    className="w-full text-left p-4 hover:bg-black hover:text-white flex justify-between items-center hover:underline font-medium">
+                    className="w-full text-left p-3 hover:bg-black hover:text-white flex justify-between items-center hover:underline font-medium text-sm">
                         {subcategory.name}
                     </Link>
                 ))}
