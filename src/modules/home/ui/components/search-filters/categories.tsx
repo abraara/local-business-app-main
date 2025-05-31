@@ -93,6 +93,8 @@ style={{position: "fixed", top: -9999, left: -9999}}
       onMouseEnter={() => setIsAnyHovered(true)}
       onMouseLeave={() => setIsAnyHovered(false)}
       >
+          {/* hardcoded "all" category */}
+
           {data.slice(0, visibleCount).map((category) => (
             <div key={category.id}>
               <CategoryDropDown 

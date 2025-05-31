@@ -11,10 +11,6 @@ import { MenuIcon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 
-const poppins = Poppins({
-    subsets: ["latin"],
-    weight: ["700"],
-});
 interface NavbarItemProps {
     href: string;
     children: React.ReactNode;
@@ -58,7 +54,7 @@ export const Navbar = () => {
     return (
         <nav className="h-20 flex border-b justify-between font-medium bg-white">
             <Link href="/" className="pl-6 flex items-center">
-            <span className={cn("text-5xl font-semibold", poppins.className)}>
+            <span className={cn("text-5xl font-semibold")}>
                 ShopLocal
             </span>
             </Link>
