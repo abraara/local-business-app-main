@@ -11,6 +11,11 @@ interface ProductCardProps {
     id: string;
     name: string;
     imageUrl?: string | null;
+    cover?: string | null;
+    image2?: string | null;
+    image3?: string | null;
+    image4?: string | null;
+    image5?: string | null;
     tenantSlug: string;
     tenantImageUrl?: string | null;
     reviewRating: number;
@@ -22,6 +27,11 @@ export const ProductCard = ({
     id,
     name,
     imageUrl,
+    cover,
+    image2,
+    image3,
+    image4,
+    image5,
     tenantSlug,
     tenantImageUrl,
     reviewRating,
@@ -35,12 +45,14 @@ export const ProductCard = ({
 
         router.push(generateTenantUrl(tenantSlug));
     };
+                        console.log('Cover URL:', cover);
     return (
         <Link href={`${generateTenantUrl(tenantSlug)}/products/${id}`}>
             <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col">
                 <div className="relative aspect-square">
+
                     <Image
-                        src={imageUrl || "/placeholder.webp"}
+                        src={cover || "/placeholder.webp"}
                         alt={name}
                         fill
                         className="object-cover"

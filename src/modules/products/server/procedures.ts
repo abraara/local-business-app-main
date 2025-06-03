@@ -18,7 +18,12 @@ export const productsRouter = createTRPCRouter({
         });
         return {
             ...product,
-            image: product.image as Media | null, // Ensure image is of type Media or null
+            cover: product.cover as Media || null, // Ensure cover is of type Media or null
+            image: product.image as Media || null, // Ensure image is of type Media or null
+            image2: product.image2 as Media || null, // Ensure image2 is of type Media or null
+            image3: product.image3 as Media || null, // Ensure image3 is of type Media or null
+            image4: product.image4 as Media || null, // Ensure image4 is of type Media or null
+            image5: product.image5 as Media || null, // Ensure image5 is of type Media or null
             tenant: product.tenant as Tenant & { image: Media | null }, // Ensure tenant is of type Tenant with optional image
         }
     }),
