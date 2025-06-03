@@ -6,6 +6,22 @@ import { sortValues } from "../search-params";
 import { DEFAULT_LIMIT } from "@/constants";
 
 export const productsRouter = createTRPCRouter({
+    getOne: baseProcedure.input(
+        z.object({
+        id: z.string(),
+    })
+    ).query(async ({ ctx, input }) => {
+        const product = await ctx.db.findByID({
+            collection: "products",
+            id: input.id,
+            depth: 2, // Ensure depth is set to 2 to include tenant and image
+        });
+        return {
+            ...product,
+            image: product.image as Media | null, // Ensure image is of type Media or null
+            tenant: product.tenant as Tenant & { image: Media | null }, // Ensure tenant is of type Tenant with optional image
+        }
+    }),
     getMany: baseProcedure.input(z.object({
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_LIMIT),
@@ -103,6 +119,11 @@ export const productsRouter = createTRPCRouter({
             docs: data.docs.map((doc) => ({
                 ...doc,
                 image: doc.image as Media || null, // Ensure image is of type Media or null
+                cover: doc.cover as Media || null, // Ensure cover is of type Media or null
+                image2: doc.image2 as Media || null, // Ensure image2 is of type Media or null
+                image3: doc.image3 as Media || null, // Ensure image3 is of type Media or null
+                image4: doc.image4 as Media || null, // Ensure image4 is of type Media or null
+                image5: doc.image5 as Media || null, // Ensure image5 is of type Media or null
                 tenant: doc.tenant as Tenant & { image?: Media } || null, // Ensure tenant is of type Tenant with optional image
             })),
         };

@@ -38,6 +38,31 @@ export const Products: CollectionConfig = {
             relationTo: 'media',
         },
         {
+            name: 'cover',
+            type: 'upload',
+            relationTo: 'media',
+        },
+        {
+            name: 'image2',
+            type: 'upload',
+            relationTo: 'media',
+        },
+        {
+            name: 'image3',
+            type: 'upload',
+            relationTo: 'media',
+        },
+        {
+            name: 'image4',
+            type: 'upload',
+            relationTo: 'media',
+        },
+        {
+            name: 'image5',
+            type: 'upload',
+            relationTo: 'media',
+        },
+        {
             name: "refundPolicy",
             type: "select",
             options: [

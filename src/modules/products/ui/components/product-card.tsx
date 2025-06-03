@@ -3,6 +3,9 @@ import { LoaderIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/lib/utils";
+
+//TODO: add real ratings
 
 interface ProductCardProps {
     id: string;
@@ -33,19 +36,19 @@ export const ProductCard = ({
         router.push(generateTenantUrl(tenantSlug));
     };
     return (
-        <Link href={`/products/${id}`}>
+        <Link href={`${generateTenantUrl(tenantSlug)}/products/${id}`}>
             <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col">
                 <div className="relative aspect-square">
                     <Image
                         src={imageUrl || "/placeholder.webp"}
                         alt={name}
                         fill
-                        objectFit="cover"
+                        className="object-cover"
                     />
                 </div>
                 <div className="p-4 border-y flex flex-col gap-3 flex-1">
                     <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
-                    <div className="flex items-center gap-2" onClick={handleUserClick}>
+                    <div className="flex items-center gap-2 hover:underline" onClick={handleUserClick}>
                         {tenantImageUrl && (
                             <Image
                                 src={tenantImageUrl}
@@ -55,7 +58,7 @@ export const ProductCard = ({
                                 className="rounded-full border shrink-0 size-[16px]"
                             />
                         )}
-                        <p className="text-sm hover:underline font-medium">{tenantSlug}</p>
+                        <p className="text-sm font-medium">{tenantSlug}</p>
                     </div>
                     {reviewCount > 0 && (
                         <div className="flex items-center gap-1">
@@ -66,10 +69,7 @@ export const ProductCard = ({
                 </div>
                 <div className="p-4">
                     <div className="relative px-2 py-1 border bg-gray-200 w-fit">
-                        <p className="text-sm font-medium">{new Intl.NumberFormat("en-US", {
-                            style: "currency",
-                            currency: "USD",
-                        }).format(Number(price))}</p>
+                        <p className="text-sm font-medium">{formatCurrency(price)}</p>
                     </div>
                 </div>
             </div>
