@@ -1,13 +1,15 @@
+import { generateTenantUrl } from "@/lib/utils";
 import { LoaderIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
     id: string;
     name: string;
     imageUrl?: string | null;
-    authorUsername: string;
-    authorImageUrl?: string | null;
+    tenantSlug: string;
+    tenantImageUrl?: string | null;
     reviewRating: number;
     reviewCount: number;
     price: number;
@@ -17,15 +19,22 @@ export const ProductCard = ({
     id,
     name,
     imageUrl,
-    authorUsername,
-    authorImageUrl,
+    tenantSlug,
+    tenantImageUrl,
     reviewRating,
     reviewCount,
     price,
 }: ProductCardProps) => {
+    const router = useRouter();
+    const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        router.push(generateTenantUrl(tenantSlug));
+    };
     return (
         <Link href={`/products/${id}`}>
-            <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xloverflow-hidden h-full flex flex-col">
+            <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col">
                 <div className="relative aspect-square">
                     <Image
                         src={imageUrl || "/placeholder.webp"}
@@ -36,18 +45,17 @@ export const ProductCard = ({
                 </div>
                 <div className="p-4 border-y flex flex-col gap-3 flex-1">
                     <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
-                    {/*to do: link to user shop*/}
-                    <div className="flex items-center gap-2" onClick={() => {}}>
-                        {authorImageUrl && (
+                    <div className="flex items-center gap-2" onClick={handleUserClick}>
+                        {tenantImageUrl && (
                             <Image
-                                src={authorImageUrl}
-                                alt={authorUsername}
+                                src={tenantImageUrl}
+                                alt={tenantSlug}
                                 width={16}
                                 height={16}
                                 className="rounded-full border shrink-0 size-[16px]"
                             />
                         )}
-                        <p className="text-sm underline font-medium">{authorUsername}</p>
+                        <p className="text-sm hover:underline font-medium">{tenantSlug}</p>
                     </div>
                     {reviewCount > 0 && (
                         <div className="flex items-center gap-1">
