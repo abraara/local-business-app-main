@@ -25,7 +25,6 @@ export const CheckoutButton = ({
             variant="elevated"
             asChild
             className={cn("py-2 rounded", className)}
-            onClick={() => alert("Checkout functionality not implemented yet.")}
         >
             <Link href={`${generateTenantUrl(tenantSlug)}/checkout`}>
                 <ShoppingCartIcon className="mr-2 h-4 w-4" />
