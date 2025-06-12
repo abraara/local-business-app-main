@@ -37,7 +37,7 @@ export const ProductCard = ({
     price,
 }: ProductCardProps) => {
     return (
-        <Link href={`/library/${id}`}>
+        <Link prefetch href={`/library/${id}`}>
             <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col">
                 <div className="relative aspect-square">
 
