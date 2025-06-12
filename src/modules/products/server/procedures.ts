@@ -19,6 +19,9 @@ export const productsRouter = createTRPCRouter({
             collection: "products",
             id: input.id,
             depth: 2, // Ensure depth is set to 2 to include tenant and image
+            select: {
+                content: false,
+           }
         });
 
         let isPurchased = false;
@@ -190,8 +193,12 @@ export const productsRouter = createTRPCRouter({
            sort,
            page: input.cursor,
            limit: input.limit,
+           select: {
+                content: false,
+           }
         });
 
+        // TODO: make this faster by avoiding n+1 queries
         const dataWithSummarizedReviews = await Promise.all(data.docs.map(async (doc) => {
             const reviewsData = await ctx.db.find({
                 collection: "reviews",

@@ -80,6 +80,7 @@ export const libraryRouter = createTRPCRouter({
             },
         });
 
+        //TODO: Optimize this part to avoid multiple queries
         const dataWithSummarizedReviews = await Promise.all(productsData.docs.map(async (doc) => {
             const reviewsData = await ctx.db.find({
                 collection: "reviews",
