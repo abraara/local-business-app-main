@@ -1,6 +1,7 @@
 import { LoaderIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 //TODO: add real ratings
 
@@ -9,10 +10,10 @@ interface ProductCardProps {
     name: string;
     imageUrl?: string | null;
     cover?: string | null;
-    image2?: string | null;
-    image3?: string | null;
-    image4?: string | null;
-    image5?: string | null;
+    //image2?: string | null;
+    //image3?: string | null;
+    //image4?: string | null;
+    //image5?: string | null;
     tenantSlug: string;
     tenantImageUrl?: string | null;
     reviewRating: number;
@@ -23,7 +24,7 @@ interface ProductCardProps {
 export const ProductCard = ({
     id,
     name,
-    //imageUrl,
+    imageUrl,
     cover,
     //image2,
     //image3,
@@ -35,18 +36,39 @@ export const ProductCard = ({
     reviewCount,
     //price,
 }: ProductCardProps) => {
+     const [isHovered, setIsHovered] = useState(false);
+        
+        // Use imageUrl as the hover image, fallback to cover if no imageUrl
+        const primaryImage = cover || "/placeholder.jpg";
+        const hoverImage = imageUrl || cover || "/placeholder.jpg";
     return (
         <Link prefetch href={`/library/${id}`}>
-            <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col">
-                <div className="relative aspect-square">
-
-                    <Image
-                        src={cover || "/placeholder.jpg"}
-                        alt={name}
-                        fill
-                        className="object-cover"
-                    />
-                </div>
+            <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+            >
+                <div className="relative aspect-square overflow-hidden">
+                                    <Image
+                                        src={primaryImage}
+                                        alt={name}
+                                        fill
+                                        className={`object-cover absolute inset-0 transition-opacity duration-300 ${
+                                            isHovered && hoverImage !== primaryImage ? 'opacity-0' : 'opacity-100'
+                                        }`}
+                                    />
+                                    
+                                    {/* Hover Image - Only render if different from primary */}
+                                    {hoverImage !== primaryImage && (
+                                        <Image
+                                            src={hoverImage}
+                                            alt={`${name} - alternate view`}
+                                            fill
+                                            className={`object-cover absolute inset-0 transition-opacity duration-300 ${
+                                                isHovered ? 'opacity-100' : 'opacity-0'
+                                            }`}
+                                        />
+                                    )}
+                                </div>
                 <div className="p-4 border-y flex flex-col gap-3 flex-1">
                     <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
                     <div className="flex items-center gap-2 hover:underline" >
