@@ -47,10 +47,8 @@ export const ProductCard = ({
     const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-
         router.push(generateTenantUrl(tenantSlug));
     };
-                        console.log('Cover URL:', cover);
     return (
         <Link href={`${generateTenantUrl(tenantSlug)}/products/${id}`}>
             <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col"

@@ -10,21 +10,21 @@ import { Button } from "@/components/ui/button";
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import { Fragment, useState } from "react";
 import { Progress } from "@/components/ui/progress";
-//import dynamic from "next/dynamic";
-import { CartButton } from "../components/cart-button";
+import dynamic from "next/dynamic";
+//import { CartButton } from "../components/cart-button";
 import { toast } from "sonner";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { ProductImageCarousel } from '@/modules/products/ui/components/product-image-carousel';
 
-// const CartButton = dynamic(() => import("../components/cart-button").then((mod) => mod.CartButton), {
-//     ssr: false,
-//     loading: () => (
-//                     <Button
-//                     className="flex-1 bg-gray-200"
-//                     >Add to Cart
-//                     </Button>
-//     ),
-// });
+const CartButton = dynamic(() => import("../components/cart-button").then((mod) => mod.CartButton), {
+    ssr: false,
+    loading: () => (
+                    <Button
+                    className="flex-1 bg-gray-200"
+                    >Add to Cart
+                    </Button>
+    ),
+});
 
 interface ProductViewProps {
     productId: string;
