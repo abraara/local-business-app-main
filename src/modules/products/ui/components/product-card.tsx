@@ -41,7 +41,6 @@ export const ProductCard = ({
     const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
     
-    // Use imageUrl as the hover image, fallback to cover if no imageUrl
     const primaryImage = cover || "/placeholder.jpg";
     const hoverImage = imageUrl || cover || "/placeholder.jpg";
     const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
