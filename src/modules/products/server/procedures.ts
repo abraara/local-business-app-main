@@ -1,6 +1,6 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { Sort, Where } from "payload";
-import { number, z } from "zod";
+import { z } from "zod";
 import { Category, Media, Tenant } from '@/payload-types';
 import { sortValues } from "../search-params";
 import { DEFAULT_LIMIT } from "@/constants";

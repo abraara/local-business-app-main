@@ -3,9 +3,12 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { ProductView, ProductViewSkeleton } from "@/modules/library/ui/views/product-view";
 import { Suspense } from "react";
 
+
 interface Props {
     params: Promise<{ productId: string }>;
 };
+
+export const dynamic = "force-dynamic"; 
 
 const Page = async ({ params }: Props) => {
     const { productId } = await params;

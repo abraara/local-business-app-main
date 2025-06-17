@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import { Fragment, useState } from "react";
 import { Progress } from "@/components/ui/progress";
-import dynamic from "next/dynamic";
+//import dynamic from "next/dynamic";
 import { CartButton } from "../components/cart-button";
 import { toast } from "sonner";
 import { RichText } from "@payloadcms/richtext-lexical/react";

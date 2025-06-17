@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "../../schemas";
-import { Poppins } from "next/font/google"
+//import { Poppins } from "next/font/google"
 import { z } from "zod";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -15,10 +15,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import  { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-const poppins = Poppins({
-    subsets: ["latin"],
-    weight: ["700"],
-});
+// const poppins = Poppins({
+//     subsets: ["latin"],
+//     weight: ["700"],
+// });
 
 
 export const SignInView = () => {

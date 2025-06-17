@@ -1,4 +1,4 @@
-import { parseAsBoolean, useQueryState, useQueryStates } from "nuqs";
+import { parseAsBoolean, useQueryStates } from "nuqs";
 
 export const useCheckoutStates = () => {
     return useQueryStates({

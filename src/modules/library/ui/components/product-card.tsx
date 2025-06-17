@@ -1,7 +1,6 @@
 import { LoaderIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { formatCurrency } from "@/lib/utils";
 
 //TODO: add real ratings
 
@@ -24,17 +23,17 @@ interface ProductCardProps {
 export const ProductCard = ({
     id,
     name,
-    imageUrl,
+    //imageUrl,
     cover,
-    image2,
-    image3,
-    image4,
-    image5,
+    //image2,
+    //image3,
+    //image4,
+    //image5,
     tenantSlug,
     tenantImageUrl,
     reviewRating,
     reviewCount,
-    price,
+    //price,
 }: ProductCardProps) => {
     return (
         <Link prefetch href={`/library/${id}`}>
