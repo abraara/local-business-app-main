@@ -51,7 +51,7 @@ export const ProductCard = ({
                 <div className="relative aspect-square">
 
                     <Image
-                        src={cover || "/placeholder.webp"}
+                        src={cover || "/placeholder.jpg"}
                         alt={name}
                         fill
                         className="object-cover"

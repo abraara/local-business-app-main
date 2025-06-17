@@ -28,7 +28,7 @@ export const CheckoutItem = ({
            <div className="overflow-hidden border-r">
             <div className="relative aspect-square h-full">
                 <Image
-                    src={imageUrl || "/placeholder.webp"}
+                    src={imageUrl || "/placeholder.jpg"}
                     alt={name}
                     fill
                     className="object-cover"
