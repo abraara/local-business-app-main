@@ -11,7 +11,8 @@ export const Products: CollectionConfig = {
             const tenant = req.user?.tenants?.[0]?.tenant as Tenant;
 
             return Boolean(tenant?.stripeDetailsSubmitted);
-        }
+        },
+        delete: ({ req }) => isSuperAdmin(req.user),
     },
     admin: {
         useAsTitle: 'name',
@@ -25,7 +26,7 @@ export const Products: CollectionConfig = {
         },
         {
             name: 'description',
-            type: 'text',
+            type: 'richText',
         },
         {
             name: 'price',
@@ -87,9 +88,27 @@ export const Products: CollectionConfig = {
         },
         {
             name: 'content',
-            type: 'textarea',
+            type: 'richText',
             admin: {
                 description: "Protected content that will be visible only to users who purchased this product. Add product documentation, downloadable files, bonus materials, etc. Supports Markdown syntax.",
+            }
+        },
+        {
+            name: 'isArchived',
+            type: 'checkbox',
+            defaultValue: false,
+            label: 'Archive',
+            admin: {
+                description: 'Check this box to archive the product. Archived products will not be visible in the store.',
+            }
+        },
+        {
+            name: 'isPrivate',
+            type: 'checkbox',
+            defaultValue: false,
+            label: 'Private',
+            admin: {
+                description: 'Check this box to make the product private. Private products will not be visible in the public marketplace, but can be purchased via tenants storefronts or via direct links.',
             }
         }
     ],
