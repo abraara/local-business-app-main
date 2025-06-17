@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/utils";
+import { useState } from "react";
 
 
 interface ProductCardProps {
@@ -25,12 +26,12 @@ interface ProductCardProps {
 export const ProductCard = ({
     id,
     name,
-    //imageUrl,
+    imageUrl,
     cover,
-    //image2,
-    //image3,
-    //image4,
-    //image5,
+    image2,
+    image3,
+    image4,
+    image5,
     tenantSlug,
     tenantImageUrl,
     reviewRating,
@@ -38,6 +39,11 @@ export const ProductCard = ({
     price,
 }: ProductCardProps) => {
     const router = useRouter();
+    const [isHovered, setIsHovered] = useState(false);
+    
+    // Use imageUrl as the hover image, fallback to cover if no imageUrl
+    const primaryImage = cover || "/placeholder.jpg";
+    const hoverImage = imageUrl || cover || "/placeholder.jpg";
     const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
@@ -47,15 +53,31 @@ export const ProductCard = ({
                         console.log('Cover URL:', cover);
     return (
         <Link href={`${generateTenantUrl(tenantSlug)}/products/${id}`}>
-            <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col">
-                <div className="relative aspect-square">
-
+            <div className="w-full bg-white shadow-md rounded-md duration-500 hover:scale-105 hover:shadow-xl overflow-hidden h-full flex flex-col"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+            >
+                <div className="relative aspect-square overflow-hidden">
                     <Image
-                        src={cover || "/placeholder.jpg"}
+                        src={primaryImage}
                         alt={name}
                         fill
-                        className="object-cover"
+                        className={`object-cover absolute inset-0 transition-opacity duration-300 ${
+                            isHovered && hoverImage !== primaryImage ? 'opacity-0' : 'opacity-100'
+                        }`}
                     />
+                    
+                    {/* Hover Image - Only render if different from primary */}
+                    {hoverImage !== primaryImage && (
+                        <Image
+                            src={hoverImage}
+                            alt={`${name} - alternate view`}
+                            fill
+                            className={`object-cover absolute inset-0 transition-opacity duration-300 ${
+                                isHovered ? 'opacity-100' : 'opacity-0'
+                            }`}
+                        />
+                    )}
                 </div>
                 <div className="p-4 border-y flex flex-col gap-3 flex-1">
                     <h2 className="text-lg font-medium line-clamp-4">{name}</h2>

@@ -14,6 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import { CartButton } from "../components/cart-button";
 import { toast } from "sonner";
 import { RichText } from "@payloadcms/richtext-lexical/react";
+import { ProductImageCarousel } from '@/modules/products/ui/components/product-image-carousel';
 
 // const CartButton = dynamic(() => import("../components/cart-button").then((mod) => mod.CartButton), {
 //     ssr: false,
@@ -39,12 +40,15 @@ export const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
     return (
         <div className="px-4 lg:px-12 py-10">
             <div className="border rounded-sm bg-white overflow-hidden">
-                <div className="relative aspect-[3.9] border-b">
-                    <Image
-                        src={data?.cover?.url || "/placeholder.jpg"}
-                        alt={data.name}
-                        fill
-                        className="object-cover"
+                <div className="relative aspect-[6/3] border-b">
+                    <ProductImageCarousel
+                        name={data.name}
+                        cover={data?.cover?.url}
+                        image={data?.image?.url}
+                        image2={data?.image2?.url}
+                        image3={data?.image3?.url}
+                        image4={data?.image4?.url}
+                        image5={data?.image5?.url}
                     />
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-6">
@@ -155,12 +159,12 @@ export const ProductViewSkeleton = () => {
     return (
         <div className="px-4 lg:px-12 py-10">
             <div className="border rounded-sm bg-white overflow-hidden">
-                <div className="relative aspect-[3.9] border-b">
+                <div className="relative aspect-[6/3] border-b">
                     <Image
                         src={"/placeholder.jpg"}
                         alt="Placeholder"
                         fill
-                        className="object-cover"
+                        className="object-contain object-center"
                     />
                 </div>
             </div>
