@@ -119,6 +119,7 @@ export const productsRouter = createTRPCRouter({
         tags: z.array(z.string()).nullable().optional(),
         sort: z.enum(sortValues).nullable().optional(),
         tenantSlug: z.string().nullable().optional(),
+        search: z.string().nullable().optional(),
 
         })).query(async ({ ctx, input }) => {
             const where: Where = {
@@ -200,6 +201,28 @@ export const productsRouter = createTRPCRouter({
             if (input.tags && input.tags.length > 0) {
                 where["tags.name"] = {
                     in: input.tags,
+                };
+            }
+
+            // if (input.search && input.search.trim() !== "") {
+            //     where.or = [
+            //         {
+            //             name: {
+            //                 contains: input.search,
+            //             },
+            //         },
+            //         {
+            //             description: {
+            //                 contains: input.search,
+            //             },
+            //         },
+            //     ];
+            // }
+
+            //more accurate search
+            if (input.search) {
+                where["name"] = {
+                    like: input.search,
                 };
             }
 
