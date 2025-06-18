@@ -1,4 +1,4 @@
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { createTRPCRouter, protectedProcedure, baseProcedure } from "@/trpc/init";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
@@ -37,6 +37,48 @@ export const reviewsRouter = createTRPCRouter({
 
         return review;
     }),
+    
+    getByProduct: baseProcedure.input(z.object({
+        productId: z.string(),
+        cursor: z.number().default(1),
+        limit: z.number().default(10),
+    })).query(async ({ ctx, input }) => {
+        const reviews = await ctx.db.find({
+            collection: "reviews",
+            where: {
+                product: {
+                    equals: input.productId,
+                },
+            },
+            depth: 1, // To populate user data
+            sort: '-createdAt',
+            page: input.cursor,
+            limit: input.limit,
+        });
+        
+        // Transform the user data to protect privacy
+        const transformedReviews = {
+            ...reviews,
+            docs: reviews.docs.map(review => {
+                // Type assertion for the populated user
+                const user = review.user as any;
+                
+                return {
+                    ...review,
+                    user: {
+                        id: typeof user === 'string' ? user : user?.id || '',
+                        name: typeof user === 'object' ? user?.name || null : null,
+                        email: typeof user === 'object' && user?.email 
+                            ? user.email.split('@')[0] + '@***' 
+                            : null,
+                    },
+                };
+            }),
+        };
+        
+        return transformedReviews;
+    }),
+    
     create: protectedProcedure.input(z.object({
         productId: z.string(),
         rating: z.number().min(1, {message: "Rating is required"}).max(5),
@@ -83,6 +125,7 @@ export const reviewsRouter = createTRPCRouter({
 
         return review;
     }),
+    
     update: protectedProcedure.input(z.object({
         reviewId: z.string(),
         rating: z.number().min(1, {message: "Rating is required"}).max(5),
