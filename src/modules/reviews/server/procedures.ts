@@ -61,7 +61,7 @@ export const reviewsRouter = createTRPCRouter({
             ...reviews,
             docs: reviews.docs.map(review => {
                 // Type assertion for the populated user
-                const user = review.user as any;
+                const user = review.user as string | { id: string; name?: string; email?: string } | null;
                 
                 return {
                     ...review,

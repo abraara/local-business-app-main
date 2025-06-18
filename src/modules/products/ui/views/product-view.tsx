@@ -415,8 +415,8 @@ export const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
                                     {reviewsData && reviewsData.docs.length > 0 ? (
                                         // Apply review filter before mapping
                                         [...reviewsData.docs]
-                                            .filter((review: any) => starFilter ? review.rating === starFilter : true)
-                                            .sort((a: any, b: any) => {
+                                            .filter((review) => starFilter ? review.rating === starFilter : true)
+                                            .sort((a, b) => {
                                                 switch (reviewFilter) {
                                                     case "newest":
                                                         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -427,11 +427,12 @@ export const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
                                                     case "helpful":
                                                     default:
                                                         // If you have a "helpfulCount", sort by it, else fallback to newest
-                                                        return (b.helpfulCount || 0) - (a.helpfulCount || 0) ||
-                                                            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                                                        return (
+                                                            //b.helpfulCount || 0) - (a.helpfulCount || 0) ||
+                                                            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                                                 }
                                             })
-                                            .map((review: any) => {
+                                            .map((review) => {
                                                 const userName = review.user?.name || review.user?.email?.split('@')[0] || 'Customer';
                                                 const initials = userName
                                                     .split(' ')
