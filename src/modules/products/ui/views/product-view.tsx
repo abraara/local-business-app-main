@@ -379,7 +379,7 @@ export const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
                                 onClick={() => {
                                     if (data.isPurchased) {
                                         // Redirect to library page where they can review
-                                        window.location.href = `/library/${productId}`;
+                                        window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}/library/${productId}`;
                                     } else {
                                         // Show message or redirect to product page
                                         toast.error("You need to purchase this product before reviewing it");
