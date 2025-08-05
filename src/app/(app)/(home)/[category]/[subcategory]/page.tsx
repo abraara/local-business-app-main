@@ -17,10 +17,12 @@ const Page = async ({params, searchParams}: Props) => {
     const filters = await LoadProductFilters(searchParams);
 
     const queryClient = getQueryClient();
-    void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({ category: subcategory, ...filters, limit: DEFAULT_LIMIT }));
+    await queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({ category: subcategory, ...filters, limit: DEFAULT_LIMIT }));
+    // Get the dehydrated state once
+    const dehydratedState = dehydrate(queryClient);
 
     return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
+        <HydrationBoundary state={dehydratedState}>
             <ProductListView category={subcategory} />
         </HydrationBoundary>
     );

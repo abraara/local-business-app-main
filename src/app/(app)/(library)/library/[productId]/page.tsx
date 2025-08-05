@@ -13,14 +13,20 @@ export const dynamic = "force-dynamic";
 const Page = async ({ params }: Props) => {
     const { productId } = await params;
     const queryClient = getQueryClient();
-    void queryClient.prefetchQuery(trpc.library.getOne.queryOptions({
-        productId,
-    }));
-     void queryClient.prefetchQuery(trpc.reviews.getOne.queryOptions({
-        productId,
-    }));
+     // Await both prefetch queries to ensure they complete
+    await Promise.all([
+        queryClient.prefetchQuery(trpc.library.getOne.queryOptions({
+            productId,
+        })),
+        queryClient.prefetchQuery(trpc.reviews.getOne.queryOptions({
+            productId,
+        }))
+    ]);
+    
+    // Get the dehydrated state once
+    const dehydratedState = dehydrate(queryClient);
     return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
+        <HydrationBoundary state={dehydratedState}>
             <Suspense fallback={<ProductViewSkeleton />}>
                 <ProductView productId={productId} />
             </Suspense>

@@ -12,10 +12,13 @@ interface LayoutProps {
 const Layout = async ({ children, params }: LayoutProps) => {
     const { slug } = await params;
     const queryClient = getQueryClient();
-    void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({ slug }));
+    await queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({ slug }));
+    
+    // Get the dehydrated state
+    const dehydratedState = dehydrate(queryClient);
     return (
         <div className="min-h-screen bg-[#f4f4f4] flex flex-col">
-            <HydrationBoundary state={dehydrate(queryClient)}>
+            <HydrationBoundary state={dehydratedState}>
                 <Suspense fallback={<NavbarSkeleton />}>
                     <Navbar slug={slug} />
                 </Suspense>

@@ -322,6 +322,7 @@ export interface Order {
  */
 export interface Review {
   id: string;
+  heading: string;
   description: string;
   rating: number;
   product: string | Product;
@@ -530,6 +531,7 @@ export interface OrdersSelect<T extends boolean = true> {
  * via the `definition` "reviews_select".
  */
 export interface ReviewsSelect<T extends boolean = true> {
+  heading?: T;
   description?: T;
   rating?: T;
   product?: T;

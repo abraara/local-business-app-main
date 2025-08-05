@@ -13,7 +13,12 @@ export const Reviews: CollectionConfig = {
     useAsTitle: 'description',
   },
   fields: [
-    {
+        {
+          name: 'heading',
+          type: 'text',
+          required: true,
+        },
+        {
         name: 'description',
         type: 'textarea',
         required: true,

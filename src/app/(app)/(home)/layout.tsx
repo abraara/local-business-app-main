@@ -12,13 +12,16 @@ interface Props {
 
 const Layout = async ({children}: Props) => {
 const queryClient = getQueryClient();
-void queryClient.prefetchQuery(
-    trpc.categories.getMany.queryOptions(),
+ await queryClient.prefetchQuery(
+        trpc.categories.getMany.queryOptions()
     );
+    
+    // Get the dehydrated state once
+    const dehydratedState = dehydrate(queryClient);
     return (
         <div className="flex flex-col min-h-screen">
                 <Navbar />
-                <HydrationBoundary state={dehydrate(queryClient)}>
+                <HydrationBoundary state={dehydratedState}>
                     <Suspense fallback={<SearchFiltersLoading />}>
                         <SearchFilters  />
                     </Suspense>

@@ -4,6 +4,43 @@ import { Media, Tenant } from '@/payload-types';
 import { DEFAULT_LIMIT } from "@/constants";
 import { TRPCError } from "@trpc/server";
 
+// Function to clean rich text content by removing problematic null references
+const cleanRichTextContent = (content: any): any => {
+    if (!content || typeof content !== 'object') return content;
+    
+    // If it's an array, clean each element
+    if (Array.isArray(content)) {
+        return content.map(item => cleanRichTextContent(item))
+            .filter(item => {
+                // Remove nodes that are just for images/links with null URLs
+                if (item?.type === 'upload' && !item?.value?.url) return false;
+                if (item?.type === 'link' && !item?.url) return false;
+                return true;
+            });
+    }
+    
+    // Create a new object to avoid mutating the original
+    const cleaned: any = {};
+    
+    for (const [key, value] of Object.entries(content)) {
+        // Skip null URLs, hrefs, or src properties
+        if (value === null && (key === 'url' || key === 'href' || key === 'src')) {
+            // For required fields, provide empty string instead of null
+            cleaned[key] = '';
+            continue;
+        }
+        
+        // Recursively clean nested objects and arrays
+        if (typeof value === 'object' && value !== null) {
+            cleaned[key] = cleanRichTextContent(value);
+        } else {
+            cleaned[key] = value;
+        }
+    }
+    
+    return cleaned;
+};
+
 export const libraryRouter = createTRPCRouter({
     getOne: protectedProcedure.input(z.object({
         productId: z.string(),
@@ -47,6 +84,11 @@ export const libraryRouter = createTRPCRouter({
                 code: 'NOT_FOUND',
                 message: 'Product not found.',
             });
+        }
+
+        // Clean the content field if it exists
+        if (product.content) {
+            product.content = cleanRichTextContent(product.content);
         }
 
         return product;

@@ -17,10 +17,12 @@ const Page = async ({ searchParams, params }: Props) => {
     const { slug } = await params;
 
     const queryClient = getQueryClient();
-    void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({ tenantSlug: slug, ...filters, limit: DEFAULT_LIMIT }));
+    await queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({ tenantSlug: slug, ...filters, limit: DEFAULT_LIMIT }));
+    // Get the dehydrated state once
+    const dehydratedState = dehydrate(queryClient);
 
     return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
+        <HydrationBoundary state={dehydratedState}>
             <ProductListView tenantSlug={slug} narrowView />
         </HydrationBoundary>
     );

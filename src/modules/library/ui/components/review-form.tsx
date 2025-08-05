@@ -17,9 +17,14 @@ interface Props {
     initialData?: ReviewsGetOneOutput;
 }
 
+const HEADING_MAX_LENGTH = 100; // Set your desired max length here
+
 const formSchema = z.object({
     rating: z.number().min(1, { message: "Rating is required" }).max(5),
     description: z.string().min(1, { message: "Description is required" }),
+    heading: z.string()
+        .min(1, { message: "Heading is required" })
+        .max(HEADING_MAX_LENGTH, { message: `Heading must be ${HEADING_MAX_LENGTH} characters or less` }),
 });
 
 export const ReviewForm = ({ productId, initialData }: Props) => {
@@ -51,6 +56,7 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
         defaultValues: {
             rating: initialData?.rating ?? 0,
             description: initialData?.description ?? "",
+            heading: initialData?.heading ?? "",
         },
     });
 
@@ -60,15 +66,19 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
                 reviewId: initialData.id,
                 rating: values.rating,
                 description: values.description,
+                heading: values.heading,
             })
         } else {
             createReview.mutate({
                 productId,
                 rating: values.rating,
                 description: values.description,
+                heading: values.heading,
             });
         }
     };
+
+    const headingValue = form.watch("heading");
 
     return (
         <Form { ...form }>
@@ -90,6 +100,31 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
                                     onChange={field.onChange}
                                     disabled={isPreview}
                                 />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="heading"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <div className="relative">
+                                    <Textarea
+                                        placeholder="Write a short heading for your review..."
+                                        disabled={isPreview}
+                                        {...field}
+                                        maxLength={HEADING_MAX_LENGTH}
+                                        className="resize-none h-12"
+                                    />
+                                    {!isPreview && (
+                                        <span className="absolute bottom-2 right-2 text-xs text-gray-500">
+                                            {headingValue.length}/{HEADING_MAX_LENGTH}
+                                        </span>
+                                    )}
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>

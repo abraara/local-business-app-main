@@ -81,6 +81,7 @@ export const reviewsRouter = createTRPCRouter({
     
     create: protectedProcedure.input(z.object({
         productId: z.string(),
+        heading: z.string().min(1, {message: "Heading is required"}),
         rating: z.number().min(1, {message: "Rating is required"}).max(5),
         description: z.string().min(1, {message: "Description is required"}),
     })).mutation(async ({ ctx, input }) => {
@@ -120,6 +121,7 @@ export const reviewsRouter = createTRPCRouter({
                 user: ctx.session.user.id,
                 rating: input.rating,
                 description: input.description,
+                heading: input.heading,
             },
         });
 
@@ -130,6 +132,7 @@ export const reviewsRouter = createTRPCRouter({
         reviewId: z.string(),
         rating: z.number().min(1, {message: "Rating is required"}).max(5),
         description: z.string().min(1, {message: "Description is required"}),
+        heading: z.string().optional(),
     })).mutation(async ({ ctx, input }) => {
         const existingReview = await ctx.db.findByID({
             depth: 0,
@@ -157,6 +160,7 @@ export const reviewsRouter = createTRPCRouter({
             data: {
                 rating: input.rating,
                 description: input.description,
+                heading: input.heading,
             },
         });
 
